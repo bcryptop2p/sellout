@@ -6,6 +6,11 @@ export type MockData = {
 	price: number;
 	description: string;
 };
+
+export type MockNFTData = MockData & {
+	tokenId: string;
+	tokenContract: string;
+};
 export const generateMockData = (): MockData[] => {
 	return [
 		// {

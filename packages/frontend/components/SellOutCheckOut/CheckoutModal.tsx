@@ -1,4 +1,4 @@
-import { MockData } from '@/utils/generateMockData';
+import { MockData, MockNFTData } from '@/utils/generateMockData';
 import { Dialog } from './Dialog';
 import { DialogContent } from './DialogContent';
 import SellOutCheckOut, { ItemMetaData } from './SellOutCheckOut';
@@ -6,10 +6,11 @@ import SellOutCheckOut, { ItemMetaData } from './SellOutCheckOut';
 export interface ConnectModalProps {
 	open: boolean;
 	onClose: () => void;
-	data: MockData;
+	data: MockData | MockNFTData;
+	handleMint?: () => void;
 }
 
-export default function CheckoutModal({ onClose, open, data }: ConnectModalProps) {
+export default function CheckoutModal({ onClose, open, data, handleMint }: ConnectModalProps) {
 	return (
 		<Dialog onClose={onClose} open={open} titleId={'titleid'}>
 			<DialogContent bottomSheetOnMobile padding="0" wide>
@@ -20,6 +21,7 @@ export default function CheckoutModal({ onClose, open, data }: ConnectModalProps
 						image: data.image,
 						price: data.price,
 					}}
+					handleMint={handleMint}
 				/>
 			</DialogContent>
 		</Dialog>

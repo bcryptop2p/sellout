@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import { Box } from '@/components/SellOutCheckOut/Box';
+import CheckoutModal from '@/components/SellOutCheckOut/CheckoutModal';
 import { NETWORK_ID } from '@/config';
 import { useSelloutModal } from '@/context/SellOutProvider';
 import contracts from '@/contracts/hardhat_contracts.json';
@@ -8,7 +9,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useAccount, useContract, useContractRead, useSigner } from 'wagmi';
+import { useAccount, useContract, useContractRead, usePrepareContractWrite, useSigner } from 'wagmi';
 import { SellOutNFT } from '../../../backend/typechain-types/contracts/NFT.sol/SellOutNFT';
 
 export default function MintPage() {
@@ -16,6 +17,7 @@ export default function MintPage() {
 	const [totalMinted, setTotalMinted] = useState(0);
 	const { isConnected } = useAccount();
 	const { data: signerData } = useSigner();
+	const [gasEstimate, setGasEstimate] = useState(0);
 
 	const allContracts = contracts as any;
 
@@ -33,18 +35,27 @@ export default function MintPage() {
 		contractInterface: NFTABI,
 	};
 
+	const { data: prepareMintData, config: mintconfig } = usePrepareContractWrite({
+		addressOrName: NFTAddress,
+		contractInterface: NFTABI,
+		functionName: 'mint',
+		signer: signerData,
+	});
+
+	useEffect(() => {
+		console.log('prepareMintData', prepareMintData?.request.gasLimit.toNumber());
+	}, [prepareMintData]);
+
 	const { data: totalSupplyData } = useContractRead({
 		...contractConfig,
 		functionName: 'totalSupply',
 		watch: true,
 	});
 
-	useEffect(() => {
-		console.log('totalSupplyData', totalSupplyData);
-	}, [totalSupplyData]);
-
 	const handleMint = async () => {
 		const data = await nftContract.mint();
+		const gas = await nftContract.estimateGas.mint();
+		return { data, gas };
 	};
 
 	useEffect(() => {
@@ -80,7 +91,7 @@ export default function MintPage() {
 }
 
 function NFTCard({ handleMint }: { handleMint: () => void }) {
-	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
+	const { sellOutModalOpen, openSellOutModal, closeModal, modalType, setModalType } = useSelloutModal();
 
 	return (
 		<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
@@ -92,6 +103,20 @@ function NFTCard({ handleMint }: { handleMint: () => void }) {
 					eaque, exercitationem praesentium nihil.
 				</p> */}
 			</div>
+			{sellOutModalOpen && (
+				<CheckoutModal
+					data={{
+						id: 3,
+						name: 'EthMexico Hacker Badge',
+						image: '/nft.png',
+						price: 0.08,
+						description: '',
+					}}
+					open={sellOutModalOpen}
+					onClose={closeModal}
+					handleMint={handleMint}
+				/>
+			)}
 			<div className="px-6 py-2  pb-2 flex justify-end ">
 				<Box
 					as="button"
@@ -106,10 +131,10 @@ function NFTCard({ handleMint }: { handleMint: () => void }) {
 					key="connect"
 					onClick={(e) => {
 						e.stopPropagation();
-						console.log('clicked');
-						handleMint();
+						setModalType('NFT');
+						// handleMint();
 						// setCheckOutData(data);
-						// openSellOutModal();
+						openSellOutModal();
 					}}
 					paddingX="14"
 					transition="default"

@@ -14,21 +14,28 @@ export const useThemeRootProps = () => {
 
 function useModalStateValue() {
 	const [isModalOpen, setModalOpen] = useState(false);
+	const [modalType, setModalType] = useState<'NFT' | 'PRODUCT'>('PRODUCT');
 
 	return {
 		closeModal: useCallback(() => setModalOpen(false), []),
 		isModalOpen,
 		openModal: useCallback(() => setModalOpen(true), []),
+		setModalType,
+		modalType,
 	};
 }
 
 interface ModalContextValue {
 	sellOutModalOpen: boolean;
 	openSellOutModal?: () => void;
+	modalType: 'NFT' | 'PRODUCT';
+	setModalType: (type: 'NFT' | 'PRODUCT') => void;
 }
 
 const ModalContext = createContext<ModalContextValue>({
 	sellOutModalOpen: false,
+	modalType: 'PRODUCT',
+	setModalType: () => {},
 });
 
 interface ModalProviderProps {
@@ -36,13 +43,19 @@ interface ModalProviderProps {
 }
 
 export function ModalProvider({ children }: ModalProviderProps) {
-	const { closeModal, isModalOpen: sellOutModalOpen, openModal: openSellOutModal } = useModalStateValue();
+	const {
+		closeModal,
+		isModalOpen: sellOutModalOpen,
+		openModal: openSellOutModal,
+		setModalType,
+		modalType,
+	} = useModalStateValue();
 
 	return (
 		<ModalContext.Provider
 			value={useMemo(
-				() => ({ closeModal, sellOutModalOpen, openSellOutModal }),
-				[closeModal, sellOutModalOpen, openSellOutModal],
+				() => ({ closeModal, sellOutModalOpen, openSellOutModal, setModalType, modalType }),
+				[closeModal, sellOutModalOpen, openSellOutModal, setModalType, modalType],
 			)}
 		>
 			{children}
@@ -51,7 +64,7 @@ export function ModalProvider({ children }: ModalProviderProps) {
 	);
 }
 
-export function useSelloutModal() {
-	const { sellOutModalOpen, openSellOutModal, closeModal } = useContext(ModalContext);
-	return { sellOutModalOpen, openSellOutModal, closeModal };
+export function useSelloutModal(type?: 'NFT' | 'PRODUCT') {
+	const { sellOutModalOpen, openSellOutModal, closeModal, modalType, setModalType } = useContext(ModalContext);
+	return { sellOutModalOpen, openSellOutModal, closeModal, modalType, setModalType };
 }

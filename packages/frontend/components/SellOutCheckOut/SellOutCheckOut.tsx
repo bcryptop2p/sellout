@@ -13,6 +13,7 @@ import { NFTStorage } from 'nft.storage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import { useSelloutModal } from '@/context/SellOutProvider';
 
 type ItemMetaData = {
 	title: string;
@@ -21,8 +22,15 @@ type ItemMetaData = {
 	description: string;
 };
 
-export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMetaData }) {
+export default function SellOutCheckOut({
+	itemMetaData,
+	handleMint,
+}: {
+	itemMetaData: ItemMetaData;
+	handleMint: () => void;
+}) {
 	const { closeModal, isModalOpen } = useModalStateValue();
+	const { modalType } = useSelloutModal();
 	const { title, price, description, image } = itemMetaData;
 	const [totalPrice, setTotalPrice] = useState(0.0);
 	const [shippingPrice, setShippingPrice] = useState(0.1);
@@ -31,9 +39,16 @@ export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMe
 			<div className="flex items-center flex-col">
 				<h1 className="text-3xl font-bold mb-5 font-rounded ">Checkout</h1>
 				<ItemMetaData title={title} price={price} description={description} image={image} />
-				<OrderSummary price={price} shipping={shippingPrice} setTotalPrice={setTotalPrice} />
+				{modalType === 'PRODUCT' && (
+					<OrderSummary price={price} shipping={shippingPrice} setTotalPrice={setTotalPrice} />
+				)}
 				<div className="mt-5">
-					<PaymentButton totalPrice={totalPrice} itemMetaData={itemMetaData} shippingPrice={shippingPrice} />
+					<PaymentButton
+						handleMint={handleMint}
+						totalPrice={totalPrice}
+						itemMetaData={itemMetaData}
+						shippingPrice={shippingPrice}
+					/>
 				</div>
 			</div>
 		</div>
@@ -51,6 +66,7 @@ export function ItemMetaData({
 	image: string;
 	description: string;
 }) {
+	const { modalType } = useSelloutModal();
 	return (
 		<div className=" rounded-2xl w-full flex-row mx-10 flex h-28 shadow-lg">
 			<div className=" flex flex-1 items-center justify-center">
@@ -58,7 +74,7 @@ export function ItemMetaData({
 			</div>
 			<div className=" flex-col justify-evenly   font-rounded   flex flex-[1.6] p-2 ">
 				<h1>{title}</h1>
-				<h1>{price} ETH</h1>
+				{modalType === 'PRODUCT' ? <h1>{price} ETH</h1> : <h1 className="italic">Cost of gas</h1>}
 			</div>
 		</div>
 	);
@@ -142,18 +158,36 @@ async function storeExampleNFT(
 	return metadata.ipnft;
 }
 
+function getPaymentButtonLabel(ipfsHash, modalType) {
+	if (ipfsHash) return 'View Receipt';
+	else {
+		switch (modalType) {
+			case 'NFT':
+				return 'Mint';
+			case 'PRODUCT':
+				return 'Confirm Payment';
+			default:
+				return 'Confirm Payment';
+		}
+	}
+}
+
 export function PaymentButton({
 	totalPrice,
 	itemMetaData,
 	shippingPrice,
+	handleMint,
 }: {
 	totalPrice: number;
 	itemMetaData: ItemMetaData;
 	shippingPrice: number;
+	handleMint: () => void;
 }) {
 	const weiPrice = totalPrice && parseUnits(totalPrice.toString());
 	const [ipfsHash, setIpfsHash] = useState('');
 	const { address } = useAccount();
+	const { modalType } = useSelloutModal();
+	console.log(modalType, 'modalType');
 	// const viewReceipt = () => toast('View Receipt');
 	const notify = () => toast('Wow so easy !');
 	const { push } = useRouter();
@@ -198,19 +232,23 @@ export function PaymentButton({
 				height="40"
 				key="connect"
 				onClick={(e) => {
-					if (ipfsHash) {
-						push(`/receipt/${ipfsHash}`);
+					if (modalType === 'NFT') {
+						handleMint();
 					} else {
-						e.stopPropagation();
-						console.log('submitting payment', totalPrice);
-						sendTransaction?.();
+						if (ipfsHash) {
+							push(`/receipt/${ipfsHash}`);
+						} else {
+							e.stopPropagation();
+							console.log('submitting payment', totalPrice);
+							sendTransaction?.();
+						}
 					}
 				}}
 				paddingX="14"
 				transition="default"
 				type="button"
 			>
-				{ipfsHash ? 'View Receipt' : 'Confirm Payment'}
+				{getPaymentButtonLabel(ipfsHash, modalType)}
 			</Box>
 		</>
 	);
