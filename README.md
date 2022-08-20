@@ -19,13 +19,19 @@ The best way to checkout in a dApp.
 Sell Out aims to be a delightful checkout experience for developers to easily integrate into their dApps. Inspired by RainbowKit, Sell Out uses a single React component to handle the entire checkout lifecycle. Don't ever stress about complex modals and checkout flows. Let Sell Out handle it so you can focus on, selling out.
 
 
-# ⚛ Component
-Import the `<CheckoutModal />` to add a fully typed checkout component to your app.
+# ⚛ Components
+
+#### Import the `<CheckoutModal />` to add a fully typed checkout component to your app.
+
 <div align='center' >
     <a href='https://sellout-ten.vercel.app/'>
         <img src='./packages/frontend/public/ModalComponent.png'>
     </a>
 </div>
+</br>
+
+#### Wrap your app in the `<SellOutProvider />` to get access to a bunch of handy hooks!
+
 <div align='center' >
     <a href='https://sellout-ten.vercel.app/'>
         <img src='./packages/frontend/public/SelloutProvider.png'>
