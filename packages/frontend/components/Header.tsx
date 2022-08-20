@@ -3,13 +3,23 @@ import Link from 'next/link';
 
 export default function Header() {
 	return (
-		<header className="flex flex-row items-center" style={{ padding: '1rem' }}>
-			<ConnectButton />
-			<div className="ml-5 underline font-bold font-rounded">
-				<Link href="/marketplace">MarketPlace</Link>
+		<header
+			className="flex flex-row mt-5  pb-4 items-center border-b border-gray-300 mx-10"
+			// style={{ padding: '1rem' }}
+		>
+			<div className="flex flex-1 ">
+				<img className="w-20" src="/SelloutLogo.png" />
 			</div>
-			<div className="ml-5 underline font-bold font-rounded">
-				<Link href="/mint">Mint</Link>
+			<div className="flex flex-1 flex-row justify-evenly  w-1/2">
+				<div className=" text-lg font-bold font-rounded">
+					<Link href="/marketplace">MarketPlace</Link>
+				</div>
+				<div className=" text-lg font-bold font-rounded">
+					<Link href="/mint">Mint</Link>
+				</div>
+			</div>
+			<div className="flex flex-1 justify-end">
+				<ConnectButton chainStatus={'icon'} accountStatus={'address'} showBalance={false} />
 			</div>
 		</header>
 	);
