@@ -37,9 +37,7 @@ interface ModalProviderProps {
 
 export function ModalProvider({ children }: ModalProviderProps) {
 	const { closeModal, isModalOpen: sellOutModalOpen, openModal: openSellOutModal } = useModalStateValue();
-	useEffect(() => {
-		console.log('sellOutModalOpen', sellOutModalOpen);
-	}, [sellOutModalOpen, openSellOutModal]);
+
 	return (
 		<ModalContext.Provider
 			value={useMemo(
@@ -48,12 +46,12 @@ export function ModalProvider({ children }: ModalProviderProps) {
 			)}
 		>
 			{children}
-			<CheckoutModal open={sellOutModalOpen} onClose={closeModal} />
+			{/* <CheckoutModal open={sellOutModalOpen} onClose={closeModal} /> */}
 		</ModalContext.Provider>
 	);
 }
 
 export function useSelloutModal() {
-	const { sellOutModalOpen, openSellOutModal } = useContext(ModalContext);
-	return { sellOutModalOpen, openSellOutModal };
+	const { sellOutModalOpen, openSellOutModal, closeModal } = useContext(ModalContext);
+	return { sellOutModalOpen, openSellOutModal, closeModal };
 }

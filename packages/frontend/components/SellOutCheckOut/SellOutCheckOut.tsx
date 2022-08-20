@@ -17,9 +17,7 @@ export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMe
 	const { closeModal, isModalOpen } = useModalStateValue();
 	const { title, price, description, image } = itemMetaData;
 	return (
-		<>
-			{/* <Dialog titleId="title" onClose={closeModal} open={true}>
-				<DialogContent> */}
+		<div className="p-10">
 			<div className="flex items-center flex-col">
 				<h1 className="text-lg mb-5 ">Checkout</h1>
 				<ItemMetaData title={title} price={price} description={description} image={image} />
@@ -28,9 +26,7 @@ export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMe
 					<PaymentButton />
 				</div>
 			</div>
-			{/* </DialogContent>
-			</Dialog> */}
-		</>
+		</div>
 	);
 }
 
@@ -91,7 +87,10 @@ export function PaymentButton() {
 			fontWeight="bold"
 			height="40"
 			key="connect"
-			onClick={() => console.log('submit payment')}
+			onClick={(e) => {
+				e.stopPropagation();
+				console.log('submitting payment');
+			}}
 			paddingX="14"
 			transition="default"
 			type="button"

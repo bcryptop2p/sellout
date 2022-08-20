@@ -7,6 +7,19 @@ import * as styles from '../../styles/css/Dialog.css';
 import { useThemeRootProps } from '@/context/SellOutProvider';
 
 export function Dialog({ children, onClose, open, titleId }) {
+	useEffect(() => {
+		const handleEscape = (event: KeyboardEvent) => open && event.key === 'Escape' && onClose();
+
+		document.addEventListener('keydown', handleEscape);
+
+		return () => document.removeEventListener('keydown', handleEscape);
+	}, [open, onClose]);
+
+	const [bodyScrollable, setBodyScrollable] = useState(true);
+	useEffect(() => {
+		setBodyScrollable(getComputedStyle(window.document.body).overflow !== 'hidden');
+	}, []);
+
 	const mobile = isMobile();
 	const handleBackdropClick = useCallback(() => onClose(), [onClose]);
 	const themeRootProps = useThemeRootProps();

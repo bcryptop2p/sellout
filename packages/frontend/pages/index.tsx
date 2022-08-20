@@ -4,10 +4,13 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { GetGreeter, SetGreeter } from '../components/contract';
 import SellOutCheckOut from '@/components/SellOutCheckOut/SellOutCheckOut';
 import { useSelloutModal } from '@/context/SellOutProvider';
+import CheckoutModal from '@/components/SellOutCheckOut/CheckoutModal';
+import { useState } from 'react';
 
 export default function Home() {
-	const { sellOutModalOpen, openSellOutModal } = useSelloutModal();
-	console.log(sellOutModalOpen);
+	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
+	const [checkOutData, setCheckOutData] = useState<any>(null);
+
 	return (
 		<div className={''}>
 			<Head>
@@ -29,17 +32,27 @@ export default function Home() {
 					alignItems: 'center',
 				}}
 			>
-				<button onClick={openSellOutModal}>Open Sellout modal</button>
-				{/* <SellOutCheckOut
-					itemMetaData={{
-						title: "Nike Men's Joyride Run Flyknit Shoes",
-						description: '',
-						image:
-							'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1625&q=80',
-						price: 120,
-					}}
-				/> */}
+				{/* <button onClick={openSellOutModal}>Open Sellout modal</button> */}
+				{sellOutModalOpen && checkOutData && (
+					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
+				)}
+				<div className="grid grid-cols-4 gap-10 w-3/4 mt-10">
+					{Array.from({ length: 10 }).map((_, i) => (
+						<div onClick={() => setCheckOutData({ title: `Hello World ${i}` })}>
+							<MarketCard data={i} />
+						</div>
+					))}
+				</div>
 			</main>
+		</div>
+	);
+}
+
+function MarketCard({ data }) {
+	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
+	return (
+		<div onClick={openSellOutModal} className="w-48 h-48 flex border  items-center justify-center">
+			<h1>Market Card</h1>
 		</div>
 	);
 }
