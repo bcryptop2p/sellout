@@ -5,10 +5,10 @@ import { Box } from './Box';
 import { Dialog } from './Dialog';
 import { DialogContent } from './DialogContent';
 import { useModalStateValue } from './ModalContext';
-import { useSendTransaction, usePrepareSendTransaction } from 'wagmi';
+import { useSendTransaction, usePrepareSendTransaction, useAccount } from 'wagmi';
 import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-
+import { NFTStorage } from 'nft.storage';
 // import { Dialog } from './Dialog';
 
 type ItemMetaData = {
@@ -92,8 +92,42 @@ export function OrderSummary({
 	);
 }
 
+async function getExampleImage(image) {
+	const r = await fetch(image);
+	if (!r.ok) {
+		throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
+	}
+	return r.blob();
+}
+
+async function storeExampleNFT(itemMetaData: ItemMetaData, txHash: string, account: string) {
+	const image = await getExampleImage(itemMetaData.image);
+	const nft = {
+		image, // use image Blob as `image` field
+		name: ItemMetaData.name,
+		description: '',
+		properties: {
+			type: 't-shirt purchase',
+			origins: {
+				txHash: txHash,
+			},
+			authors: [{ account: account }],
+			content: {
+				'text/markdown': 'This is an example of a purhase of a tshirt using sellout',
+			},
+		},
+	};
+
+	const client = new NFTStorage({ token: process.env.NFT_STORAGE_KEY });
+	const metadata = await client.store(nft);
+
+	console.log('NFT data stored!');
+	console.log('Metadata URI: ', metadata.url);
+}
+
 export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number; itemMetaData: ItemMetaData }) {
 	const weiPrice = totalPrice && parseUnits(totalPrice.toString());
+	const { address } = useAccount();
 
 	const { config } = usePrepareSendTransaction({
 		request: {
@@ -103,7 +137,11 @@ export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number
 	});
 	const { data, isLoading, isSuccess, sendTransaction } = useSendTransaction(config);
 
-	console.log('env', process.env.NFT_STORAGE_KEY);
+	useEffect(() => {
+		if (isSuccess && data && address) {
+			storeExampleNFT(itemMetaData, data?.hash, address);
+		}
+	}, [isSuccess, data]);
 
 	return (
 		<Box
