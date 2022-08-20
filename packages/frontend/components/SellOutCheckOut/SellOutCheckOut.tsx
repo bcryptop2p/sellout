@@ -25,14 +25,15 @@ export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMe
 	const { closeModal, isModalOpen } = useModalStateValue();
 	const { title, price, description, image } = itemMetaData;
 	const [totalPrice, setTotalPrice] = useState(0.0);
+	const [shippingPrice, setShippingPrice] = useState(0.1);
 	return (
 		<div className="p-10">
 			<div className="flex items-center flex-col">
 				<h1 className="text-3xl font-bold mb-5 font-rounded ">Checkout</h1>
 				<ItemMetaData title={title} price={price} description={description} image={image} />
-				<OrderSummary price={price} shipping={0.1} setTotalPrice={setTotalPrice} />
+				<OrderSummary price={price} shipping={shippingPrice} setTotalPrice={setTotalPrice} />
 				<div className="mt-5">
-					<PaymentButton totalPrice={totalPrice} itemMetaData={itemMetaData} />
+					<PaymentButton totalPrice={totalPrice} itemMetaData={itemMetaData} shippingPrice={shippingPrice} />
 				</div>
 			</div>
 		</div>
@@ -103,16 +104,28 @@ async function getExampleImage(image) {
 	return r.blob();
 }
 
-async function storeExampleNFT(itemMetaData: ItemMetaData, txHash: string, account: string) {
+async function storeExampleNFT(
+	itemMetaData: ItemMetaData,
+	txHash: string,
+	account: string,
+	totalPrice: number,
+	shippingPrice: number,
+) {
 	const image = await getExampleImage(itemMetaData.image);
+	console.log(itemMetaData.title, 'name name');
+	const name = itemMetaData.title;
 	const nft = {
 		image, // use image Blob as `image` field
-		name: ItemMetaData.name,
+		name: name,
 		description: '',
 		properties: {
 			type: 't-shirt purchase',
 			origins: {
 				txHash: txHash,
+				price: itemMetaData.price,
+				orderDate: new Date().toLocaleDateString(),
+				shippingPrice: shippingPrice,
+				totalPrice: totalPrice,
 			},
 			authors: [{ account: account }],
 			content: {
@@ -129,7 +142,15 @@ async function storeExampleNFT(itemMetaData: ItemMetaData, txHash: string, accou
 	return metadata.ipnft;
 }
 
-export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number; itemMetaData: ItemMetaData }) {
+export function PaymentButton({
+	totalPrice,
+	itemMetaData,
+	shippingPrice,
+}: {
+	totalPrice: number;
+	itemMetaData: ItemMetaData;
+	shippingPrice: number;
+}) {
 	const weiPrice = totalPrice && parseUnits(totalPrice.toString());
 	const [ipfsHash, setIpfsHash] = useState('');
 	const { address } = useAccount();
@@ -145,16 +166,17 @@ export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number
 	const { data, isLoading, isSuccess, sendTransaction } = useSendTransaction(config);
 
 	const storeExampleNFTAsync = async (itemMetaData, data, address) => {
-		const ipfsUrl = await storeExampleNFT(itemMetaData, data?.hash, address);
+		const ipfsUrl = await storeExampleNFT(itemMetaData, data?.hash, address, totalPrice, shippingPrice);
+		console.log('ipfsUrl', ipfsUrl);
 		setIpfsHash(ipfsUrl);
 	};
 
-	useEffect(() => {
-		if (ipfsHash) {
-			console.log('ipfsHashNew', ipfsHash);
-			notify();
-		}
-	}, [ipfsHash]);
+	// useEffect(() => {
+	// 	if (ipfsHash) {
+	// 		console.log('ipfsHashNew', ipfsHash);
+	// 		notify();
+	// 	}
+	// }, [ipfsHash]);
 
 	useEffect(() => {
 		if (isSuccess && data && address) {

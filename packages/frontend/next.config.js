@@ -15,6 +15,9 @@ const nextConfig = {
 	env: {
 		NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
 	},
+	images: {
+		domains: ['https://ipfs.io/'],
+	},
 };
 
 module.exports = withVanillaExtract(nextConfig);
