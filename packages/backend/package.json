@@ -15,6 +15,8 @@
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.7.3",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.0.0",
@@ -23,11 +25,18 @@
     "ethers": "^5.6.9",
     "hardhat": "^2.9.9",
     "hardhat-deploy": "^0.11.10",
+    "hardhat-typechain": "^0.3.5",
+    "ts-generator": "^0.1.1",
     "ts-node": "^10.8.1",
+    "typechain": "^8.1.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.0"
+    "@typechain/ethers-v5": "^10.1.0",
+    "dotenv": "^16.0.0",
+    "hardhat-typechain": "^0.3.5",
+    "ts-generator": "^0.1.1",
+    "typechain": "^8.1.0"
   }
 }
