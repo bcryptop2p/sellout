@@ -2,7 +2,7 @@ import CopyIcon from '@/components/icons/Copy';
 import { Dialog } from '@/components/SellOutCheckOut/Dialog';
 import { DialogContent } from '@/components/SellOutCheckOut/DialogContent';
 import Image from 'next/image';
-import { useAccount } from 'wagmi';
+import { useAccount, useEn, useEnsName } from 'wagmi';
 
 const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;
 
@@ -18,7 +18,8 @@ const truncate = (str, n) => {
 
 export default function ReceiptPage(props) {
 	const { address } = useAccount();
-	console.log(props);
+
+	if (!props.ipfsData) return null;
 	return (
 		<div className="w-screen h-screen flex justify-center items-center">
 			<Dialog onClose={() => null} open={true} titleId={'titleid'}>
@@ -67,7 +68,7 @@ export default function ReceiptPage(props) {
 						</div>
 						<div className=" flex flex-row justify-between mt-5 ">
 							<div>Total Price: </div>
-							<div>{props.ipfsData.properties.origins.totalPrice} ETH</div>
+							<div>{props.ipfsData.properties.origins.totalPrice.toFixed(4)} ETH</div>
 						</div>
 					</div>
 				</DialogContent>

@@ -51,7 +51,7 @@ export default function Home() {
 	);
 }
 
-function MarketCard({ data, setCheckOutData }: { data: MockData; setCheckOutData: (data: any) => void }) {
+export function MarketCard({ data, setCheckOutData }: { data: MockData; setCheckOutData: (data: any) => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
 	return (
 		<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
