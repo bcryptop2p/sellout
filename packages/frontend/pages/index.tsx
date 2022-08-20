@@ -3,8 +3,11 @@ import Head from 'next/head';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { GetGreeter, SetGreeter } from '../components/contract';
 import SellOutCheckOut from '@/components/SellOutCheckOut/SellOutCheckOut';
+import { useSelloutModal } from '@/context/SellOutProvider';
 
 export default function Home() {
+	const { sellOutModalOpen, openSellOutModal } = useSelloutModal();
+	console.log(sellOutModalOpen);
 	return (
 		<div className={''}>
 			<Head>
@@ -26,7 +29,16 @@ export default function Home() {
 					alignItems: 'center',
 				}}
 			>
-				<SellOutCheckOut />
+				<button onClick={openSellOutModal}>Open Sellout modal</button>
+				{/* <SellOutCheckOut
+					itemMetaData={{
+						title: "Nike Men's Joyride Run Flyknit Shoes",
+						description: '',
+						image:
+							'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1625&q=80',
+						price: 120,
+					}}
+				/> */}
 			</main>
 		</div>
 	);

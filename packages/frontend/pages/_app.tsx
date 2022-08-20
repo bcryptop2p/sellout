@@ -12,6 +12,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider, Chain } from '@rainbow-me/rainbowkit';
 
 import { useIsMounted } from '../hooks';
+import { ModalProvider } from '@/context/SellOutProvider';
 
 // Get environment variables
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -55,10 +56,12 @@ const App = ({ Component, pageProps }: AppProps) => {
 	return (
 		<WagmiConfig client={wagmiClient}>
 			<RainbowKitProvider coolMode chains={chains}>
-				<NextHead>
-					<title>create-web3</title>
-				</NextHead>
-				<Component {...pageProps} />
+				<ModalProvider>
+					<NextHead>
+						<title>create-web3</title>
+					</NextHead>
+					<Component {...pageProps} />
+				</ModalProvider>
 			</RainbowKitProvider>
 		</WagmiConfig>
 	);

@@ -6,54 +6,59 @@ import { DialogContent } from './DialogContent';
 import { useModalStateValue } from './ModalContext';
 // import { Dialog } from './Dialog';
 
-export default function SellOutCheckOut() {
+type ItemMetaData = {
+	title: string;
+	price: number;
+	image: string;
+	description: string;
+};
+
+export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMetaData }) {
 	const { closeModal, isModalOpen } = useModalStateValue();
+	const { title, price, description, image } = itemMetaData;
 	return (
 		<>
-			<Dialog titleId="title" onClose={closeModal} open={true}>
-				<DialogContent>
-					<div className="flex items-center flex-col">
-						<h1 className="text-lg mb-5 ">Checkout</h1>
-						<ItemMetaData />
-						<OrderSummary />
-						<div className="mt-5">
-							<PaymentButton />
-						</div>
-					</div>
-				</DialogContent>
-			</Dialog>
+			{/* <Dialog titleId="title" onClose={closeModal} open={true}>
+				<DialogContent> */}
+			<div className="flex items-center flex-col">
+				<h1 className="text-lg mb-5 ">Checkout</h1>
+				<ItemMetaData title={title} price={price} description={description} image={image} />
+				<OrderSummary />
+				<div className="mt-5">
+					<PaymentButton />
+				</div>
+			</div>
+			{/* </DialogContent>
+			</Dialog> */}
 		</>
 	);
 }
 
-function ItemMetaData({
+export function ItemMetaData({
 	title,
 	price,
 	image,
 	description,
 }: {
 	title: string;
-	price: string;
+	price: number;
 	image: string;
 	description: string;
 }) {
 	return (
 		<div className=" rounded-2xl w-full flex-row mx-10 flex h-28 shadow-lg">
 			<div className=" flex flex-1 items-center justify-center">
-				<img
-					src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1625&q=80"
-					className="w-28 h-auto  rounded-xl"
-				/>
+				<img src={image} className="w-28 h-auto  rounded-xl" />
 			</div>
 			<div className=" flex-col justify-evenly   font-rounded   flex flex-[1.6] p-2 ">
-				<h1>Nike Men's Joyride Run Flyknit Shoes</h1>
-				<h1>$120</h1>
+				<h1>{title}</h1>
+				<h1>${price}</h1>
 			</div>
 		</div>
 	);
 }
 
-function OrderSummary() {
+export function OrderSummary() {
 	return (
 		<div className=" rounded-2xl w-full flex-col mx-10 flex h-52 shadow mt-10 p-5">
 			<div className="border-b border-b-gray-200 pb-6">Order Summary</div>
@@ -73,7 +78,7 @@ function OrderSummary() {
 	);
 }
 
-function PaymentButton() {
+export function PaymentButton() {
 	return (
 		<Box
 			as="button"
