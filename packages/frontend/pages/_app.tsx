@@ -13,6 +13,7 @@ import { getDefaultWallets, RainbowKitProvider, Chain, darkTheme } from '@rainbo
 
 import { useIsMounted } from '../hooks';
 import { ModalProvider } from '@/context/SellOutProvider';
+import { ToastContainer } from 'react-toastify';
 
 // Get environment variables
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -58,6 +59,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 			<RainbowKitProvider coolMode chains={chains}>
 				<ModalProvider>
 					<NextHead>
+						<ToastContainer />
 						<title>create-web3</title>
 					</NextHead>
 					<Component {...pageProps} />

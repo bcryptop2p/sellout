@@ -10,6 +10,9 @@ import { BigNumber, ethers } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { NFTStorage } from 'nft.storage';
 // import { Dialog } from './Dialog';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 type ItemMetaData = {
 	title: string;
@@ -121,14 +124,18 @@ async function storeExampleNFT(itemMetaData: ItemMetaData, txHash: string, accou
 	const client = new NFTStorage({ token: process.env.NFT_STORAGE_KEY });
 	const metadata = await client.store(nft);
 
-	console.log('NFT data stored!');
-	console.log('Metadata URI: ', metadata.url);
+	// console.log('NFT data stored!');
+	// console.log('Metadata URI: ', metadata);
+	return metadata.ipnft;
 }
 
 export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number; itemMetaData: ItemMetaData }) {
 	const weiPrice = totalPrice && parseUnits(totalPrice.toString());
+	const [ipfsHash, setIpfsHash] = useState('');
 	const { address } = useAccount();
-
+	// const viewReceipt = () => toast('View Receipt');
+	const notify = () => toast('Wow so easy !');
+	const { push } = useRouter();
 	const { config } = usePrepareSendTransaction({
 		request: {
 			to: '0xE35ef95A80839C3c261197B6c93E5765C9A6a31a',
@@ -137,34 +144,52 @@ export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number
 	});
 	const { data, isLoading, isSuccess, sendTransaction } = useSendTransaction(config);
 
+	const storeExampleNFTAsync = async (itemMetaData, data, address) => {
+		const ipfsUrl = await storeExampleNFT(itemMetaData, data?.hash, address);
+		setIpfsHash(ipfsUrl);
+	};
+
+	useEffect(() => {
+		if (ipfsHash) {
+			console.log('ipfsHashNew', ipfsHash);
+			notify();
+		}
+	}, [ipfsHash]);
+
 	useEffect(() => {
 		if (isSuccess && data && address) {
-			storeExampleNFT(itemMetaData, data?.hash, address);
+			storeExampleNFTAsync(itemMetaData, data, address);
 		}
 	}, [isSuccess, data]);
 
 	return (
-		<Box
-			as="button"
-			background="accentColor"
-			borderRadius="connectButton"
-			boxShadow="connectButton"
-			className={touchableStyles({ active: 'shrink', hover: 'grow' })}
-			color="accentColorForeground"
-			fontFamily="body"
-			fontWeight="bold"
-			height="40"
-			key="connect"
-			onClick={(e) => {
-				e.stopPropagation();
-				console.log('submitting payment', totalPrice);
-				sendTransaction?.();
-			}}
-			paddingX="14"
-			transition="default"
-			type="button"
-		>
-			Confirm Payment
-		</Box>
+		<>
+			<Box
+				as="button"
+				background="accentColor"
+				borderRadius="connectButton"
+				boxShadow="connectButton"
+				className={touchableStyles({ active: 'shrink', hover: 'grow' })}
+				color="accentColorForeground"
+				fontFamily="body"
+				fontWeight="bold"
+				height="40"
+				key="connect"
+				onClick={(e) => {
+					if (ipfsHash) {
+						push(`/receipt/${ipfsHash}`);
+					} else {
+						e.stopPropagation();
+						console.log('submitting payment', totalPrice);
+						sendTransaction?.();
+					}
+				}}
+				paddingX="14"
+				transition="default"
+				type="button"
+			>
+				{ipfsHash ? 'View Receipt' : 'Confirm Payment'}
+			</Box>
+		</>
 	);
 }
