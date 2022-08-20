@@ -72,14 +72,14 @@ export default function MintPage() {
 					alignItems: 'center',
 				}}
 			>
-				<NFTCard />
+				<NFTCard handleMint={handleMint} />
 				<p style={{ margin: '12px 0 24px' }}>{totalMinted} minted so far!</p>
 			</main>
 		</div>
 	);
 }
 
-function NFTCard() {
+function NFTCard({ handleMint }: { handleMint: () => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
 
 	return (
@@ -107,6 +107,7 @@ function NFTCard() {
 					onClick={(e) => {
 						e.stopPropagation();
 						console.log('clicked');
+						handleMint();
 						// setCheckOutData(data);
 						// openSellOutModal();
 					}}
