@@ -6,7 +6,8 @@ import { Dialog } from './Dialog';
 import { DialogContent } from './DialogContent';
 import { useModalStateValue } from './ModalContext';
 import { useSendTransaction, usePrepareSendTransaction } from 'wagmi';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 
 // import { Dialog } from './Dialog';
 
@@ -20,7 +21,7 @@ type ItemMetaData = {
 export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMetaData }) {
 	const { closeModal, isModalOpen } = useModalStateValue();
 	const { title, price, description, image } = itemMetaData;
-	const [totalPrice, setTotalPrice] = useState(null);
+	const [totalPrice, setTotalPrice] = useState(0.0);
 	return (
 		<div className="p-10">
 			<div className="flex items-center flex-col">
@@ -28,7 +29,7 @@ export default function SellOutCheckOut({ itemMetaData }: { itemMetaData: ItemMe
 				<ItemMetaData title={title} price={price} description={description} image={image} />
 				<OrderSummary price={price} shipping={0.1} setTotalPrice={setTotalPrice} />
 				<div className="mt-5">
-					<PaymentButton totalPrice={totalPrice} />
+					<PaymentButton totalPrice={totalPrice} itemMetaData={itemMetaData} />
 				</div>
 			</div>
 		</div>
@@ -91,14 +92,19 @@ export function OrderSummary({
 	);
 }
 
-export function PaymentButton({ totalPrice }: { totalPrice: number }) {
+export function PaymentButton({ totalPrice, itemMetaData }: { totalPrice: number; itemMetaData: ItemMetaData }) {
+	const weiPrice = totalPrice && parseUnits(totalPrice.toString());
+
 	const { config } = usePrepareSendTransaction({
-		request: { to: '0xE35ef95A80839C3c261197B6c93E5765C9A6a31a', value: BigNumber.from('10000000000000000') },
+		request: {
+			to: '0xE35ef95A80839C3c261197B6c93E5765C9A6a31a',
+			value: weiPrice,
+		},
 	});
 	const { data, isLoading, isSuccess, sendTransaction } = useSendTransaction(config);
-	useEffect(() => {
-		console.log(data, 'data');
-	}, [data]);
+
+	console.log('env', process.env.NFT_STORAGE_KEY);
+
 	return (
 		<Box
 			as="button"

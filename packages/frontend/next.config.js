@@ -12,6 +12,9 @@ const nextConfig = {
 		// !! WARN !!
 		ignoreBuildErrors: true,
 	},
+	env: {
+		NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
+	},
 };
 
 module.exports = withVanillaExtract(nextConfig);
