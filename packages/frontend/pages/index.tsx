@@ -6,6 +6,9 @@ import SellOutCheckOut from '@/components/SellOutCheckOut/SellOutCheckOut';
 import { useSelloutModal } from '@/context/SellOutProvider';
 import CheckoutModal from '@/components/SellOutCheckOut/CheckoutModal';
 import { useState } from 'react';
+import { Box } from '@/components/SellOutCheckOut/Box';
+import { touchableStyles } from '@/styles/css/touchableStyles';
+import { generateMockData, MockData } from '@/utils/generateMockData';
 
 export default function Home() {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
@@ -37,9 +40,9 @@ export default function Home() {
 					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
 				)}
 				<div className="grid grid-cols-4 gap-10 w-3/4 mt-10">
-					{Array.from({ length: 10 }).map((_, i) => (
-						<div onClick={() => setCheckOutData({ title: `Hello World ${i}` })}>
-							<MarketCard data={i} />
+					{generateMockData().map((data, i) => (
+						<div>
+							<MarketCard data={data} setCheckOutData={setCheckOutData} />
 						</div>
 					))}
 				</div>
@@ -48,11 +51,42 @@ export default function Home() {
 	);
 }
 
-function MarketCard({ data }) {
+function MarketCard({ data, setCheckOutData }: { data: MockData; setCheckOutData: (data: any) => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
 	return (
-		<div onClick={openSellOutModal} className="w-48 h-48 flex border  items-center justify-center">
-			<h1>Market Card</h1>
+		<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
+			<img className="w-full" src={data.image} alt="Sunset in the mountains" />
+			<div className="px-6 py-2">
+				<div className="font-bold text-xl mb-2">{data.name}</div>
+				{/* <p className="text-gray-700 text-base">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis
+					eaque, exercitationem praesentium nihil.
+				</p> */}
+			</div>
+			<div className="px-6 py-2  pb-2 flex justify-end ">
+				<Box
+					as="button"
+					background="accentColor"
+					borderRadius="connectButton"
+					boxShadow="connectButton"
+					className={touchableStyles({ active: 'shrink', hover: 'grow' })}
+					color="accentColorForeground"
+					fontFamily="body"
+					fontWeight="bold"
+					height="40"
+					key="connect"
+					onClick={(e) => {
+						e.stopPropagation();
+						setCheckOutData(data);
+						openSellOutModal();
+					}}
+					paddingX="14"
+					transition="default"
+					type="button"
+				>
+					Buy
+				</Box>
+			</div>
 		</div>
 	);
 }

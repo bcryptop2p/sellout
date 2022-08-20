@@ -11,6 +11,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+
  font-family: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

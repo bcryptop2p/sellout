@@ -9,7 +9,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider, Chain } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, RainbowKitProvider, Chain, darkTheme } from '@rainbow-me/rainbowkit';
 
 import { useIsMounted } from '../hooks';
 import { ModalProvider } from '@/context/SellOutProvider';
