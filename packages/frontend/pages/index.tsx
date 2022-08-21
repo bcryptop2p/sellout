@@ -60,13 +60,17 @@ export default function Home() {
 export function MarketCard({ data, setCheckOutData }: { data: MockData; setCheckOutData: (data: any) => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
 	return (
-		<div className="w-60 rounded overflow-hidden border pt-5 shadow-lg px-5 ">
-			<img className="w-full" src={data.image} alt="Sunset in the mountains" />
-			<div className="px-2 py-2  flex flex-row">
-				<div className="font-bold flex flex-1  items-center   text-sm mb-2">{data.name}</div>
-				<div className=" py-2  pb-2 flex justify-end ">
-					<div
-						className="border cursor-pointer px-4 py-2"
+		<div className="w-60 rounded overflow-hidden  pt-5  shadow-lg px-5 ">
+			<img className="w-full" src={data.image} />
+			<div className="px-2   flex flex-col">
+				<div>
+					<div className="font-bold flex flex-1 items-center mt-2  text-sm ">{data.name}</div>
+					<div>{data.price} ETH</div>
+				</div>
+
+				<div className=" py-2  pb-2 flex justify-center  ">
+					{/* <div
+						className="border cursor-pointer px-4 py-2 w-full justify-center flex rounded-lg"
 						onClick={(e) => {
 							e.stopPropagation();
 							setCheckOutData(data);
@@ -74,7 +78,32 @@ export function MarketCard({ data, setCheckOutData }: { data: MockData; setCheck
 						}}
 					>
 						Buy
-					</div>
+					</div> */}
+					<Box
+						as="button"
+						background="accentColor"
+						borderRadius="connectButton"
+						boxShadow="connectButton"
+						className={touchableStyles({ active: 'shrink', hover: 'grow' })}
+						color="accentColorForeground"
+						fontFamily="body"
+						fontWeight="bold"
+						height="40"
+						paddingLeft="36"
+						paddingRight="36"
+						marginBottom="10"
+						key="connect"
+						onClick={(e) => {
+							e.stopPropagation();
+							setCheckOutData(data);
+							openSellOutModal();
+						}}
+						paddingX="14"
+						transition="default"
+						type="button"
+					>
+						Buy
+					</Box>
 				</div>
 			</div>
 		</div>
