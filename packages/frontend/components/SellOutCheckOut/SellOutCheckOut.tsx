@@ -30,12 +30,13 @@ export default function SellOutCheckOut({
 	handleMint: () => void;
 }) {
 	const { closeModal, isModalOpen } = useModalStateValue();
-	const { modalType } = useSelloutModal();
+	const { modalType, modalTheme, setModalAccent, setModalTheme } = useSelloutModal();
 	const { title, price, description, image } = itemMetaData;
 	const [totalPrice, setTotalPrice] = useState(0.0);
 	const [shippingPrice, setShippingPrice] = useState(0.1);
+	console.log(modalTheme, 'modalTheme');
 	return (
-		<div className="p-10">
+		<div data-theme={modalTheme} className="p-10 bg-bgmain">
 			<div className="flex items-center flex-col">
 				<h1 className="text-3xl font-bold mb-5 font-rounded ">Checkout</h1>
 				<ItemMetaData title={title} price={price} description={description} image={image} />
@@ -49,6 +50,29 @@ export default function SellOutCheckOut({
 						itemMetaData={itemMetaData}
 						shippingPrice={shippingPrice}
 					/>
+				</div>
+			</div>
+			<div className="mb-2">
+				<span className="pb-2">Mode:</span>
+				<div className="flex flex-row">
+					{[
+						{ theme: 'DARK', color: '#22272D' },
+						{ theme: 'SLATE', color: '#1A1A1E' },
+						{ theme: 'LIGHT', color: '#FFFEFE' },
+					].map((theme, i) => {
+						console.log(theme.color);
+						return (
+							<div
+								onClick={(e) => {
+									e.stopPropagation();
+									setModalTheme(theme.theme);
+								}}
+								key={i}
+								style={{ backgroundColor: theme.color }}
+								className={`z-10 rounded-full mt-2 w-5 h-5 ${i !== 0 && 'ml-2'}  border`}
+							/>
+						);
+					})}
 				</div>
 			</div>
 		</div>
@@ -68,7 +92,7 @@ export function ItemMetaData({
 }) {
 	const { modalType } = useSelloutModal();
 	return (
-		<div className=" rounded-2xl w-full flex-row mx-10 flex h-28 shadow-lg">
+		<div className=" rounded-2xl w-full flex-row mx-10  flex h-36 shadow-lg">
 			<div className=" flex flex-1 items-center justify-center">
 				<img src={image} className="w-28 h-auto  rounded-xl" />
 			</div>

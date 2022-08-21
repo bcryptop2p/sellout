@@ -7,6 +7,20 @@
   src: url("../public/SF-Rounded.ttf");
 }
 
+@layer base {
+  [data-theme="LIGHT"] {
+    --color-bg-main: 254, 254, 254;
+  }
+  [data-theme="SLATE"] {
+    --color-bg-main: 26,26,30;
+  }
+  [data-theme="DARK"] {
+    --color-bg-main: 34, 39, 46;
+
+  }
+
+}
+
 html,
 body {
   padding: 0;
