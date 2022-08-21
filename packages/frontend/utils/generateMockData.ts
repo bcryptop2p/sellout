@@ -30,7 +30,7 @@ export const generateMockData = (): MockData[] => {
 		// },
 		{
 			id: 3,
-			name: 'Eth Global t-shirt',
+			name: 'EthGlobal tee',
 			image: 'https://pbs.twimg.com/media/FHoOQ7BXMAsO7Jb?format=jpg&name=medium',
 			price: 0.08,
 			description: '',
@@ -53,7 +53,7 @@ export const generateMockData = (): MockData[] => {
 		// },
 		{
 			id: 6,
-			name: 'Llama t-shirt',
+			name: 'Llama tee',
 			image: 'https://cdn.shopify.com/s/files/1/0844/9673/products/Cat_and_Llama_TS_1000x.jpg?v=1573986430',
 			price: 0.1,
 			description: '',

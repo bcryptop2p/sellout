@@ -42,10 +42,6 @@ export default function MintPage() {
 		signer: signerData,
 	});
 
-	useEffect(() => {
-		console.log('prepareMintData', prepareMintData?.request.gasLimit.toNumber());
-	}, [prepareMintData]);
-
 	const { data: totalSupplyData } = useContractRead({
 		...contractConfig,
 		functionName: 'totalSupply',

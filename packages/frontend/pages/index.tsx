@@ -25,6 +25,7 @@ export default function Home() {
 			<Header />
 
 			<main
+				className=""
 				style={{
 					minHeight: '60vh',
 					flex: '1',
@@ -38,7 +39,7 @@ export default function Home() {
 				{sellOutModalOpen && checkOutData && (
 					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
 				)}
-				<div className="grid grid-cols-4 gap-10 w-3/4 mt-10">
+				<div className="grid grid-cols-3 mt-10 w-[80%]  ">
 					{generateMockData().map((data, i) => (
 						<div>
 							<MarketCard data={data} setCheckOutData={setCheckOutData} />
@@ -53,38 +54,44 @@ export default function Home() {
 export function MarketCard({ data, setCheckOutData }: { data: MockData; setCheckOutData: (data: any) => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal } = useSelloutModal();
 	return (
-		<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
+		<div className="w-60 rounded overflow-hidden border pt-5 shadow-lg px-5 ">
 			<img className="w-full" src={data.image} alt="Sunset in the mountains" />
-			<div className="px-6 py-2">
-				<div className="font-bold text-xl mb-2">{data.name}</div>
-				{/* <p className="text-gray-700 text-base">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis
-					eaque, exercitationem praesentium nihil.
-				</p> */}
-			</div>
-			<div className="px-6 py-2  pb-2 flex justify-end ">
-				<Box
-					as="button"
-					background="accentColor"
-					borderRadius="connectButton"
-					boxShadow="connectButton"
-					className={touchableStyles({ active: 'shrink', hover: 'grow' })}
-					color="accentColorForeground"
-					fontFamily="body"
-					fontWeight="bold"
-					height="40"
-					key="connect"
-					onClick={(e) => {
-						e.stopPropagation();
-						setCheckOutData(data);
-						openSellOutModal();
-					}}
-					paddingX="14"
-					transition="default"
-					type="button"
-				>
-					Buy
-				</Box>
+			<div className="px-2 py-2  flex flex-row">
+				<div className="font-bold flex flex-1  items-center   text-sm mb-2">{data.name}</div>
+				<div className=" py-2  pb-2 flex justify-end ">
+					{/* <Box
+						as="button"
+						background="accentColor"
+						borderRadius="connectButton"
+						boxShadow="connectButton"
+						className={touchableStyles({ active: 'shrink', hover: 'grow' })}
+						color="accentColorForeground"
+						fontFamily="body"
+						fontWeight="bold"
+						height="40"
+						key="connect"
+						onClick={(e) => {
+							e.stopPropagation();
+							setCheckOutData(data);
+							openSellOutModal();
+						}}
+						paddingX="14"
+						transition="default"
+						type="button"
+					>
+						Buy
+					</Box> */}
+					<div
+						className="border cursor-pointer px-4 py-2"
+						onClick={(e) => {
+							e.stopPropagation();
+							setCheckOutData(data);
+							openSellOutModal();
+						}}
+					>
+						Buy
+					</div>
+				</div>
 			</div>
 		</div>
 	);

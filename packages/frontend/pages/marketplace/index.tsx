@@ -33,7 +33,7 @@ export default function MarketPlace() {
 				{sellOutModalOpen && checkOutData && (
 					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
 				)}
-				<div className="grid grid-cols-4 gap-10 w-3/4 mt-10">
+				<div className="grid grid-cols-3 mt-10 w-[80%] ">
 					{generateMockData().map((data, i) => (
 						<div key={i}>
 							<MarketCard data={data} setCheckOutData={setCheckOutData} />
