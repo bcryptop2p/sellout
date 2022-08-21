@@ -84,7 +84,7 @@ export default function MintPage() {
 				}}
 			>
 				<NFTCard handleMint={handleMint} />
-				<p style={{ margin: '12px 0 24px' }}>{totalMinted} minted so far!</p>
+				<p className="font-rounded text-lg font-bold mt-2">{totalMinted} minted so far!</p>
 			</main>
 		</div>
 	);
@@ -94,30 +94,26 @@ function NFTCard({ handleMint }: { handleMint: () => void }) {
 	const { sellOutModalOpen, openSellOutModal, closeModal, modalType, setModalType } = useSelloutModal();
 
 	return (
-		<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
-			<img className="w-full" src={'/nft.png'} />
-			<div className="px-6 py-2">
-				{/* <div className="font-bold text-xl mb-2">EthMexico Hacker Badge</div> */}
-				{/* <p className="text-gray-700 text-base">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis
-					eaque, exercitationem praesentium nihil.
-				</p> */}
+		<>
+			<div className="max-w-sm rounded overflow-hidden  shadow-lg ">
+				<img className="w-full" src={'/nft.png'} />
+
+				{sellOutModalOpen && (
+					<CheckoutModal
+						data={{
+							id: 3,
+							name: 'EthMexico Hacker Badge',
+							image: '/nft.png',
+							price: 0.08,
+							description: '',
+						}}
+						open={sellOutModalOpen}
+						onClose={closeModal}
+						handleMint={handleMint}
+					/>
+				)}
 			</div>
-			{sellOutModalOpen && (
-				<CheckoutModal
-					data={{
-						id: 3,
-						name: 'EthMexico Hacker Badge',
-						image: '/nft.png',
-						price: 0.08,
-						description: '',
-					}}
-					open={sellOutModalOpen}
-					onClose={closeModal}
-					handleMint={handleMint}
-				/>
-			)}
-			<div className="px-6 py-2  pb-2 flex justify-end ">
+			<div className="mt-5">
 				<Box
 					as="button"
 					background="accentColor"
@@ -143,6 +139,6 @@ function NFTCard({ handleMint }: { handleMint: () => void }) {
 					Mint
 				</Box>
 			</div>
-		</div>
+		</>
 	);
 }
