@@ -295,16 +295,36 @@ export function ThemeModes() {
 
 export function AddressInput() {
 	return (
-		<div>
-			<input type="text" placeholder="Enter your address" />
+		<div
+			onClick={(e) => {
+				e.stopPropagation();
+			}}
+		>
+			<input
+				onFocus={(e) => {
+					e.stopPropagation();
+				}}
+				type="text"
+				placeholder="Enter your address"
+			/>
 		</div>
 	);
 }
 
 export function PromoCode() {
 	return (
-		<div>
-			<input type="text" placeholder="Enter your promo code" />
+		<div
+			onClick={(e) => {
+				e.stopPropagation();
+			}}
+		>
+			<input
+				onFocus={(e) => {
+					e.stopPropagation();
+				}}
+				type="text"
+				placeholder="Enter your promo code"
+			/>
 		</div>
 	);
 }
