@@ -16,7 +16,7 @@ The best way to checkout in a dApp. Sell Out handles the entire checkout flow in
 
 # 🧐 Project philosophy
 
-Sell Out aims to be a delightful checkout experience for developers to easily integrate into their dApps. Inspired by RainbowKit, Sell Out uses a single React component to handle the entire checkout lifecycle. Don't ever stress about complex modals and checkout flows. Let Sell Out handle it so you can focus on, selling out.
+Sell Out at it's core, is a component library for Web3 checkout experiences. Sell Out aims to be a delightful checkout experience for developers to easily integrate into their dApps. Inspired by RainbowKit, Sell Out uses a single React component to handle the entire checkout lifecycle. Don't ever stress about complex modals and checkout flows. Let Sell Out handle it so you can focus on, selling out.
 
 
 # ⚛ Components
