@@ -19,6 +19,9 @@ export default function Header() {
 				<div className=" text-lg font-bold font-rounded">
 					<Link href="/mint">Mint</Link>
 				</div>
+				<div className=" text-lg font-bold font-rounded">
+					<Link href="/componentExamples">Components</Link>
+				</div>
 			</div>
 			<div className="flex flex-1 justify-end">
 				<ConnectButton chainStatus={'icon'} accountStatus={'address'} showBalance={false} />

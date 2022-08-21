@@ -296,6 +296,7 @@ export function ThemeModes() {
 export function AddressInput() {
 	return (
 		<div
+			className=" rounded-2xl text-textmain w-full flex-col mx-10 flex h-28 shadow mt-5 p-5"
 			onClick={(e) => {
 				e.stopPropagation();
 			}}
@@ -304,8 +305,9 @@ export function AddressInput() {
 				onFocus={(e) => {
 					e.stopPropagation();
 				}}
-				type="text"
+				type="description"
 				placeholder="Enter your address"
+				className="bg-bgmain h-full placeholder:text-textmain"
 			/>
 		</div>
 	);
@@ -314,6 +316,7 @@ export function AddressInput() {
 export function PromoCode() {
 	return (
 		<div
+			className=" rounded-2xl text-textmain w-full flex-col mx-10 flex h-16 shadow mt-5 p-5"
 			onClick={(e) => {
 				e.stopPropagation();
 			}}
@@ -323,6 +326,7 @@ export function PromoCode() {
 					e.stopPropagation();
 				}}
 				type="text"
+				className="bg-bgmain placeholder:text-textmain"
 				placeholder="Enter your promo code"
 			/>
 		</div>
