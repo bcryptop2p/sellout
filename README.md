@@ -7,7 +7,7 @@
 
 # Sell Out
 
-The best way to checkout in a dApp.
+The best way to checkout in a dApp. Sell Out is an entire checkout flow in a single React component.
 
 ## Repo and Demo Site
 🕺 Demo Site: https://sellout-ten.vercel.app/ </br>
