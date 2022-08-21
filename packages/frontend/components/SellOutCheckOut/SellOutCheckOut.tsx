@@ -38,7 +38,6 @@ export default function SellOutCheckOut({
 	const { title, price, description, image } = itemMetaData;
 	const [totalPrice, setTotalPrice] = useState(0.0);
 	const [shippingPrice, setShippingPrice] = useState(0.1);
-	console.log(modalTheme, 'modalTheme');
 	return (
 		<div data-theme={modalTheme} className="p-10 bg-bgmain">
 			<div className="flex items-center flex-col">
@@ -136,7 +135,6 @@ async function storeExampleNFT(
 	shippingPrice: number,
 ) {
 	const image = await getExampleImage(itemMetaData.image);
-	console.log(itemMetaData.title, 'name name');
 	const name = itemMetaData.title;
 	const nft = {
 		image, // use image Blob as `image` field
@@ -249,7 +247,6 @@ export function PaymentButton({
 							push(`/receipt/${ipfsHash}`);
 						} else {
 							e.stopPropagation();
-							console.log('submitting payment', totalPrice);
 							sendTransaction?.();
 						}
 					}
@@ -275,7 +272,6 @@ export function ThemeModes() {
 					{ theme: 'SLATE', color: '#1A1A1E' },
 					{ theme: 'LIGHT', color: '#FFFEFE' },
 				].map((theme, i) => {
-					console.log(theme.color);
 					return (
 						<div
 							onClick={(e) => {
