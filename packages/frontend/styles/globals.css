@@ -10,12 +10,15 @@
 @layer base {
   [data-theme="LIGHT"] {
     --color-bg-main: 254, 254, 254;
+    --color-text-main: 0, 0, 0;
   }
   [data-theme="SLATE"] {
     --color-bg-main: 26,26,30;
+    --color-text-main: 255,255,255;
   }
   [data-theme="DARK"] {
     --color-bg-main: 34, 39, 46;
+    --color-text-main: 255, 255, 255;
 
   }
 

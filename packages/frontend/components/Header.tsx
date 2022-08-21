@@ -8,7 +8,9 @@ export default function Header() {
 			// style={{ padding: '1rem' }}
 		>
 			<div className="flex flex-1 ">
-				<img className="w-20" src="/SelloutLogo.png" />
+				<Link href={'/'}>
+					<img className="w-20 cursor-pointer" src="/SelloutLogo.png" />
+				</Link>
 			</div>
 			<div className="flex flex-1 flex-row justify-evenly  w-1/2">
 				<div className=" text-lg font-bold font-rounded">

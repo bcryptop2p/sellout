@@ -8,9 +8,11 @@ export interface ConnectModalProps {
 	onClose: () => void;
 	data: MockData | MockNFTData;
 	handleMint?: () => void;
+	address: boolean;
+	promoCode: boolean;
 }
 
-export default function CheckoutModal({ onClose, open, data, handleMint }: ConnectModalProps) {
+export default function CheckoutModal({ onClose, open, data, handleMint, address, promoCode }: ConnectModalProps) {
 	return (
 		<Dialog onClose={onClose} open={open} titleId={'titleid'}>
 			<DialogContent bottomSheetOnMobile padding="0" wide>
@@ -22,6 +24,8 @@ export default function CheckoutModal({ onClose, open, data, handleMint }: Conne
 						price: data.price,
 					}}
 					handleMint={handleMint}
+					address={address}
+					promoCode={promoCode}
 				/>
 			</DialogContent>
 		</Dialog>

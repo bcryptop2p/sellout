@@ -9,6 +9,7 @@ module.exports = {
 	theme: {
 		colors: {
 			bgmain: withOpacity('--color-bg-main'),
+			textmain: withOpacity('--color-text-main'),
 		},
 		extend: {
 			fontFamily: {

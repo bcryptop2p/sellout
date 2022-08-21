@@ -31,9 +31,9 @@ export default function MarketPlace() {
 			>
 				{/* <button onClick={openSellOutModal}>Open Sellout modal</button> */}
 				{sellOutModalOpen && checkOutData && (
-					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
+					<CheckoutModal promoCode address data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
 				)}
-				<div className="grid grid-cols-3 mt-10 w-[80%] ">
+				<div className="grid md:grid-cols-3 grid-cols-1 mt-10 w-[80%] ">
 					{generateMockData().map((data, i) => (
 						<div key={i}>
 							<MarketCard data={data} setCheckOutData={setCheckOutData} />

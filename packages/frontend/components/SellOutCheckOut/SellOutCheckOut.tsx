@@ -25,9 +25,13 @@ type ItemMetaData = {
 export default function SellOutCheckOut({
 	itemMetaData,
 	handleMint,
+	address,
+	promoCode,
 }: {
 	itemMetaData: ItemMetaData;
 	handleMint: () => void;
+	address: boolean;
+	promoCode: boolean;
 }) {
 	const { closeModal, isModalOpen } = useModalStateValue();
 	const { modalType, modalTheme, setModalAccent, setModalTheme } = useSelloutModal();
@@ -38,11 +42,13 @@ export default function SellOutCheckOut({
 	return (
 		<div data-theme={modalTheme} className="p-10 bg-bgmain">
 			<div className="flex items-center flex-col">
-				<h1 className="text-3xl font-bold mb-5 font-rounded ">Checkout</h1>
+				<h1 className="text-3xl font-bold mb-5 font-rounded text-textmain">Checkout</h1>
 				<ItemMetaData title={title} price={price} description={description} image={image} />
 				{modalType === 'PRODUCT' && (
 					<OrderSummary price={price} shipping={shippingPrice} setTotalPrice={setTotalPrice} />
 				)}
+				{promoCode && <PromoCode />}
+				{address && <AddressInput />}
 				<div className="mt-5">
 					<PaymentButton
 						handleMint={handleMint}
@@ -52,29 +58,7 @@ export default function SellOutCheckOut({
 					/>
 				</div>
 			</div>
-			<div className="mb-2">
-				<span className="pb-2">Mode:</span>
-				<div className="flex flex-row">
-					{[
-						{ theme: 'DARK', color: '#22272D' },
-						{ theme: 'SLATE', color: '#1A1A1E' },
-						{ theme: 'LIGHT', color: '#FFFEFE' },
-					].map((theme, i) => {
-						console.log(theme.color);
-						return (
-							<div
-								onClick={(e) => {
-									e.stopPropagation();
-									setModalTheme(theme.theme);
-								}}
-								key={i}
-								style={{ backgroundColor: theme.color }}
-								className={`z-10 rounded-full mt-2 w-5 h-5 ${i !== 0 && 'ml-2'}  border`}
-							/>
-						);
-					})}
-				</div>
-			</div>
+			<ThemeModes />
 		</div>
 	);
 }
@@ -96,7 +80,7 @@ export function ItemMetaData({
 			<div className=" flex flex-1 items-center justify-center">
 				<img src={image} className="w-28 h-auto  rounded-xl" />
 			</div>
-			<div className=" flex-col justify-evenly   font-rounded   flex flex-[1.6] p-2 ">
+			<div className=" flex-col justify-evenly  text-textmain font-rounded   flex flex-[1.6] p-2 ">
 				<h1>{title}</h1>
 				{modalType === 'PRODUCT' ? <h1>{price} ETH</h1> : <h1 className="italic">Cost of gas</h1>}
 			</div>
@@ -118,7 +102,7 @@ export function OrderSummary({
 		setTotalPrice(totalPrice);
 	}, [setTotalPrice, totalPrice]);
 	return (
-		<div className=" rounded-2xl w-full flex-col mx-10 flex h-52 shadow mt-10 p-5">
+		<div className=" rounded-2xl text-textmain w-full flex-col mx-10 flex h-52 shadow mt-10 p-5">
 			<div className="border-b border-b-gray-200 pb-6">Order Summary</div>
 			<div className="flex mt-5 justify-between">
 				<div>Order</div>
@@ -254,6 +238,8 @@ export function PaymentButton({
 				fontFamily="body"
 				fontWeight="bold"
 				height="40"
+				paddingLeft="36"
+				paddingRight="36"
 				key="connect"
 				onClick={(e) => {
 					if (modalType === 'NFT') {
@@ -275,5 +261,50 @@ export function PaymentButton({
 				{getPaymentButtonLabel(ipfsHash, modalType)}
 			</Box>
 		</>
+	);
+}
+
+export function ThemeModes() {
+	const { setModalTheme } = useSelloutModal();
+	return (
+		<div className="mb-2">
+			{/* <span className="pb-2 text-textmain font-rounded ">Mode:</span> */}
+			<div className="flex flex-row">
+				{[
+					{ theme: 'DARK', color: '#22272D' },
+					{ theme: 'SLATE', color: '#1A1A1E' },
+					{ theme: 'LIGHT', color: '#FFFEFE' },
+				].map((theme, i) => {
+					console.log(theme.color);
+					return (
+						<div
+							onClick={(e) => {
+								e.stopPropagation();
+								setModalTheme(theme.theme);
+							}}
+							key={i}
+							style={{ backgroundColor: theme.color }}
+							className={`z-10 rounded-full mt-2 w-5 h-5 ${i !== 0 && 'ml-2'}  border`}
+						/>
+					);
+				})}
+			</div>
+		</div>
+	);
+}
+
+export function AddressInput() {
+	return (
+		<div>
+			<input type="text" placeholder="Enter your address" />
+		</div>
+	);
+}
+
+export function PromoCode() {
+	return (
+		<div>
+			<input type="text" placeholder="Enter your promo code" />
+		</div>
 	);
 }

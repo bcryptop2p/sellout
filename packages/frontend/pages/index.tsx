@@ -37,9 +37,15 @@ export default function Home() {
 			>
 				{/* <button onClick={openSellOutModal}>Open Sellout modal</button> */}
 				{sellOutModalOpen && checkOutData && (
-					<CheckoutModal data={checkOutData} open={sellOutModalOpen} onClose={closeModal} />
+					<CheckoutModal
+						address={false}
+						promoCode={false}
+						data={checkOutData}
+						open={sellOutModalOpen}
+						onClose={closeModal}
+					/>
 				)}
-				<div className="grid grid-cols-3 mt-10 w-[80%]  ">
+				<div className="grid md:grid-cols-3 grid-cols-1 mt-10 w-[80%]  ">
 					{generateMockData().map((data, i) => (
 						<div>
 							<MarketCard data={data} setCheckOutData={setCheckOutData} />
@@ -59,28 +65,6 @@ export function MarketCard({ data, setCheckOutData }: { data: MockData; setCheck
 			<div className="px-2 py-2  flex flex-row">
 				<div className="font-bold flex flex-1  items-center   text-sm mb-2">{data.name}</div>
 				<div className=" py-2  pb-2 flex justify-end ">
-					{/* <Box
-						as="button"
-						background="accentColor"
-						borderRadius="connectButton"
-						boxShadow="connectButton"
-						className={touchableStyles({ active: 'shrink', hover: 'grow' })}
-						color="accentColorForeground"
-						fontFamily="body"
-						fontWeight="bold"
-						height="40"
-						key="connect"
-						onClick={(e) => {
-							e.stopPropagation();
-							setCheckOutData(data);
-							openSellOutModal();
-						}}
-						paddingX="14"
-						transition="default"
-						type="button"
-					>
-						Buy
-					</Box> */}
 					<div
 						className="border cursor-pointer px-4 py-2"
 						onClick={(e) => {
